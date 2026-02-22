@@ -17,25 +17,31 @@ void LoRaHandler::begin() {
 }
 
 void LoRaHandler::loop() {
-  // 1. อ่านค่าตอบกลับจาก LoRa (เหมือนเดิม)
+  // 1. อ่านค่าตอบกลับจาก LoRa แบบ Non-blocking (ทีละ char ไม่บล็อก loop)
   while (LoRaSerial.available()) {
-    String line = LoRaSerial.readStringUntil('\n');
-    line.trim();
-    if (line.length() > 0) {
-      Serial.print("[LoRa RX] "); Serial.println(line); 
-      
-      if (line.indexOf("Network joined") != -1 || line.indexOf("Joined") != -1) _status = "Joined";
-      else if (line.indexOf("Join failed") != -1) _status = "Failed";
-      
-      if (line.indexOf("RSSI") != -1) {
-         int idx = line.indexOf("RSSI");
-         _rssi = line.substring(idx + 5).toInt();
+    char c = (char)LoRaSerial.read();
+    if (c == '\n') {
+      _loraRxBuffer.trim();
+      if (_loraRxBuffer.length() > 0) {
+        String line = _loraRxBuffer;
+        _loraRxBuffer = "";
+        Serial.print("[LoRa RX] "); Serial.println(line);
+
+        if (line.indexOf("Network joined") != -1 || line.indexOf("Joined") != -1) _status = "Joined";
+        else if (line.indexOf("Join failed") != -1) _status = "Failed";
+
+        if (line.indexOf("RSSI") != -1) {
+          int idx = line.indexOf("RSSI");
+          _rssi = line.substring(idx + 5).toInt();
+        }
+
+        if (line.indexOf("Done") != -1 && _status == "Joined") {
+          unsigned long diff = (millis() - _lastTxMs) / 1000;
+          _lastSentTime = String(diff) + "s ago";
+        }
       }
-      
-      if (line.indexOf("Done") != -1 && _status == "Joined") {
-         unsigned long diff = (millis() - _lastTxMs) / 1000;
-         _lastSentTime = String(diff) + "s ago"; 
-      }
+    } else if (c != '\r') {
+      _loraRxBuffer += c;
     }
   }
 

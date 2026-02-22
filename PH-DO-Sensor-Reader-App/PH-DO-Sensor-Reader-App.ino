@@ -53,7 +53,7 @@ void loop() {
     
     // --- 1. อ่านค่าจาก Sensor ---
     SensorResult phData = phSensor.read();
-    delay(100); // เว้นจังหวะ RS485
+    delay(20); // เว้นจังหวะ RS485 (ลดจาก 100ms เพื่อไม่บล็อก touch)
     DOSensorResult doData = doSensor.read();
 
     // เลือกค่า Temp ที่จะใช้

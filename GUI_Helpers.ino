@@ -46,14 +46,14 @@ void SystemGUI::flashListRow(int textY, String text) {
   int rectY = textY - 25; 
   int rectH = 40;         
   
-  _tft.fillRect(0, rectY, 320, rectH, TFT_WHITE); 
+  _tft.fillRect(0, rectY, 320, rectH, TFT_WHITE);
   _tft.setFreeFont(FMB12);
-  _tft.setTextColor(TFT_BLACK, TFT_WHITE); 
+  _tft.setTextColor(TFT_BLACK, TFT_WHITE);
   _tft.setCursor(10, textY); _tft.print(text);
   _tft.setCursor(290, textY); _tft.print(">");
-  
-  delay(100); 
-  
+
+  delay(60); // ลดจาก 100ms ยังเห็น effect อยู่แต่ไม่บล็อก touch นาน
+
   _tft.fillRect(0, rectY, 320, rectH, COLOR_BG);
   _tft.setTextColor(TFT_WHITE, COLOR_BG);
   _tft.setCursor(10, textY); _tft.print(text);
@@ -64,8 +64,8 @@ void SystemGUI::flashListRow(int textY, String text) {
 // Effect ปุ่มทั่วไป (ขอบมนสีขาว)
 void SystemGUI::drawButtonEffect(int x, int y, int w, int h) {
   int radius = 6;
-  _tft.drawRoundRect(x, y, w, h, radius, TFT_WHITE); 
-  delay(100); 
+  _tft.drawRoundRect(x, y, w, h, radius, TFT_WHITE);
+  delay(60); // ลดจาก 100ms
   _tft.drawRoundRect(x, y, w, h, radius, COLOR_BG);
 }
 

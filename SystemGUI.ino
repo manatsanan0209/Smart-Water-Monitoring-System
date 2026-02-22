@@ -36,7 +36,7 @@ void SystemGUI::loop() {
     // Serial.print("Touch Raw -> X: "); Serial.print(t_x); Serial.print(", Y: "); Serial.println(t_y);
     // _tft.fillCircle(t_x, t_y, 3, TFT_RED);
 
-    delay(150);
+    delay(50); // ลดจาก 150ms (capacitive touch ไม่ต้องการ debounce นาน)
   }
 
   if (_currentState == SCREEN_DASHBOARD && _hasData) {

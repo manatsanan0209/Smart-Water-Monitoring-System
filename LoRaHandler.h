@@ -32,6 +32,9 @@ class LoRaHandler {
     // ตัวแปรพักค่าข้อมูล (Buffer)
     float _bufTemp, _bufPh, _bufDo;
     bool _stTemp, _stPh, _stDo;
+
+    // Buffer สำหรับ non-blocking serial read
+    String _loraRxBuffer = "";
 };
 
 #endif
